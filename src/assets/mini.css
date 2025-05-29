@@ -109,6 +109,9 @@
 		text-align: center;
 		flex: 1;
 	}
+	.pwInfo, .phoneInfo{
+		color: red;
+	}
 	input[type='checkbox']{
 		margin-right: 0.2em;
 	}

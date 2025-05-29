@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <h3>회원가입</h3>
-    <form id="memberForm">
+    <form id="memberForm" @submit="">
         <div class="mb-3">
           <label for="userid" class="form-label">아이디</label>
           <div class = "input-group">
@@ -48,3 +48,7 @@
     </form>
   </div>    
 </template>
+
+<script setup>
+
+</script>
