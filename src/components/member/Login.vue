@@ -18,21 +18,38 @@
 </template>
 
 <script setup>
+    import router from '@/router';
+import { userData } from '@/util/login';
+import axios from 'axios';
     import {inject} from 'vue';
     import {reactive, ref} from 'vue'
 
-    const axios = inject('axios');
+    // const axios2 = inject('axios');
     const util = inject('util');
     const idRegex = ref(/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,10}$/);
     const pwRegex = ref(/^(?=.*[A-Za-z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?])[A-Za-z\d!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]{8,12}$/);
     const form = reactive({id : "", password : ""})
+    const uData = userData();
 
     const login = async () => {
 
         if(util.regex(idRegex.value, form.id, "아이디는 8~10자 사이이며, 영문자와 숫자만 포함해야 합니다.")) return;
         if(util.regex(pwRegex.value, form.password, "비밀번호는 8~12자 사이이며, 영문자, 숫자, 특수문자를 각각 1개 이상 포함해야 합니다.")) return;        
 
-        axios.axiosFetch('/mini2/member/login', form, '/', 'null');
+        // axios2.axiosFetch('/mini2/member/login', form, '/', 'null');
+
+        axios
+        .post('/mini2/member/login', form)
+        .then((response) => {
+            if(response.status === 200) {
+                uData.login(response.data?.userId, response.data?.boardAuth, response.data?.lockYn);
+                router.push({name : 'home'});
+            }
+        })
+        .catch((err) => {
+            (err.response.data?.msg) ? (alert(err.response.data?.msg)) : (alert('알 수 없는 오류가 발생했습니다.'));
+        })
+
     }
 
 

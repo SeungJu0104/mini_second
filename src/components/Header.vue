@@ -20,31 +20,43 @@
 					<li class="nav-item">
 						<router-link class="nav-link" to="/board/자유게시판">자유게시판</router-link>
 					</li>
-					<li class="nav-item" id="memberList">
-						<router-link class="nav-link" to="/member/memberList">회원목록</router-link>
-					</li>
+						<template v-if="uData.checkAuth">
+							<li class="nav-item" id="memberList">
+								<router-link class="nav-link" :to="{name : 'memberList'}">회원목록</router-link>
+							</li>
+						</template>
 					</ul>
 				</div>
-				<template v-if="localStorage"></template> <!--로컬 스토리지에 id 확인해 v-if로 렌더링에서 제외시키기-->
-				<button class="btn btn-outline-success me-2 nologin" id="goLogin" type="button">
-					<router-link class="route" to="/member/login">로그인</router-link>
-				</button>
-				<button class="btn btn-outline-danger me-2 login" id="goLogOut" type="button" >
-					<router-link class="route" to="/member/logout">로그아웃</router-link>
-				</button>
-				<button class="btn btn-outline-success me-2 login" id="detailMember" type="button">
-					<router-link class="route" to="/member/memberList">상세보기</router-link>
-				</button>
-				<button class="btn btn-outline-success me-2 nologin" id="goRegister" type="button">
-					<router-link class="route" to="/member/registerForm">회원가입</router-link>
-				</button>
+
+				<template v-if="uData.getUserInfo">
+					<button class="btn btn-outline-danger me-2 login" id="goLogOut" type="button" @click="logout">
+						<span class="route">로그아웃</span>
+					</button>
+					<button class="btn btn-outline-success me-2 login" id="detailMember" type="button">
+						<router-link class="route" :to="{name : 'memberDetail'}">상세보기</router-link>
+					</button>		
+				</template>
+
+				<template v-if="!uData.getUserInfo">
+					<button class="btn btn-outline-success me-2 nologin" id="goLogin" type="button">
+						<router-link class="route" :to="{name: 'login'}">로그인</router-link>	
+					</button>
+					<button class="btn btn-outline-success me-2 nologin" id="goRegister" type="button">
+						<router-link class="route" :to="{name: 'memberRegisterForm'}">회원가입</router-link>
+					</button>					
+				</template>				
 			</div>
 		</nav>
     </div>
 </template>
 
 <script setup>
-    defineOptions({
-        name : 'Header'
-    })
+	import { userData } from '@/util/login';
+
+	const uData = userData();
+
+	const logout = () => {
+		uData.logout();
+	}
+
 </script>

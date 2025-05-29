@@ -99,12 +99,10 @@
 		.then((response) => {
 			if (response.status === 200 && response.data?.pageResponse !== null) {
 				pageResponse.value = response.data.pageResponse;
-			} else {
-				alert(response.data?.msg);
 			}
 		})
 		.catch((error) => {
-			alert(error.response.data?.msg);
+			(err.response.data?.msg) ? (alert(err.response.data?.msg)) : (alert('알 수 없는 오류가 발생했습니다.'));
 		});
 
 	};
@@ -120,19 +118,22 @@
 		paging(createDTO());
 	};
 
+	const searchData = () => {
+		form.pageNo = 1;
+		createDTO();
+	};
+
 	const search = () => {
-		console.log(createDTO());
+		console.log(searchData());
 		axios
 		.post('/mini2/member/search', createDTO())
 		.then((response) => {
 			if (response.status === 200 && response.data?.pageResponse !== null) {
 				pageResponse.value = response.data.pageResponse;
-			} else {
-				alert(response.data?.msg);
 			}
 		})
-		.catch((error) => {
-			alert(error.response.data?.msg);
+		.catch((err) => {
+			(err.response.data?.msg) ? (alert(err.response.data?.msg)) : (alert('알 수 없는 오류가 발생했습니다.'));
 		});
 	}
 
@@ -148,15 +149,11 @@
 			memberNo: e.target.value
 		})
 		.then((response) => {
-			if (response.status === 200 && response.data?.status === 'success') item.lockYn = lockYn
-			else {
-				e.target.checked = !lockYn;
-				alert(response.data?.msg);
-			}
+			if (response.status === 200) item.lockYn = lockYn
 		})
-		.catch((error) => {
+		.catch((err) => {
 			e.target.checked = !lockYn;
-			alert(error.response.data?.msg);
+			(err.response.data?.msg) ? (alert(err.response.data?.msg)) : (alert('알 수 없는 오류가 발생했습니다.'));
 		});
 
 	};
