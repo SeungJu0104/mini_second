@@ -26,15 +26,13 @@ import axios from 'axios';
 
     // const axios2 = inject('axios');
     const util = inject('util');
-    const idRegex = ref(/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,10}$/);
-    const pwRegex = ref(/^(?=.*[A-Za-z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?])[A-Za-z\d!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]{8,12}$/);
     const form = reactive({id : "", password : ""})
     const uData = userData();
 
     const login = async () => {
 
-        if(util.regex({regex: idRegex.value, val: form.id, msg: "아이디는 8~10자 사이이며, 영문자와 숫자만 포함해야 합니다."})) return;
-        if(util.regex({regex: pwRegex.value, val: form.password, msg: "비밀번호는 8~12자 사이이며, 영문자, 숫자, 특수문자를 각각 1개 이상 포함해야 합니다."})) return;        
+        if(util.regex({regex: util.idRegex.value, val: form.id, msg: util.idErrMsg.value})) return;
+        if(util.regex({regex: util.pwRegex.value, val: form.password, msg: util.pwErrMsg.value})) return;        
 
         // axios2.axiosFetch('/mini2/member/login', form, '/', 'null');
 

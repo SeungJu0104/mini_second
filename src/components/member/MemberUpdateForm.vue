@@ -56,8 +56,6 @@ import util from '@/util/util';
       pwRegexChk : false,
       phoneRegexChk : false
     });
-    const phoneRegex = /^010-\d{4}-\d{4}$/;
-    const pwRegex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?])[A-Za-z\d!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]{8,12}$/;
 
     const updateInit = () => {
         const uData = userData();
@@ -69,19 +67,19 @@ import util from '@/util/util';
       if(!confirm("수정하시겠습니까?")) return;
 
       if(!watchChk.pwInvalidChk) {
-        alert("비밀번호와 비밀번호 확인이 일치하지 않습니다.");
+        alert(util.pwInvalidErrMsg.value);
         focus(document.querySelector('#password'));
         return;
       }
 
       if(watchChk.phoneRegexChk) {
-        alert("010-0000-0000 형식으로 입력해주세요.");
+        alert(util.phoneErrMsg.value);
         focus(document.querySelector('#handphone'));
         return;
       }
 
       if(watchChk.pwRegexChk) {
-        alert("비밀번호는 8~12자 사이이며, 영문자, 숫자, 특수문자를 각각 1개 이상 포함해야 합니다.");
+        alert(util.pwErrMsg.value);
         focus(document.querySelector('#password'));
         return;
       }
@@ -101,7 +99,7 @@ import util from '@/util/util';
       [() => updateData.value.password, () => passwordChk.value], // 객체가 아닌 객체의 속성을 감시할 때는 Getter 함수로 감싸서 사용한다. 
       ([newPw1, newPw2]) => {
         watchChk.pwInvalidChk = (newPw1 === newPw2);
-        watchChk.pwRegexChk = (util.regex({regex: pwRegex, val: newPw1}) || util.regex({regex: pwRegex, val: newPw2}));
+        watchChk.pwRegexChk = (util.regex({regex: util.pwRegex.value, val: newPw1}) || util.regex({regex: util.pwRegex.value, val: newPw2}));
         console.log(watchChk.pwInvalidChk);
         console.log(watchChk.pwRegexChk);
       },
@@ -111,16 +109,10 @@ import util from '@/util/util';
     watch(
       () => updateData.value.phoneNumber, 
       (newPhoneNumber) => {
-        watchChk.phoneRegexChk = util.regex({regex: phoneRegex, val: newPhoneNumber});
+        watchChk.phoneRegexChk = util.regex({regex: util.phoneRegex.value, val: newPhoneNumber});
       }, 
       {deep : true}
     );
-
-
-    
-    
-    
-
 
     onMounted(() => {
         updateInit();
