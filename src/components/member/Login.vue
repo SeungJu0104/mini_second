@@ -18,21 +18,21 @@
 </template>
 
 <script setup>
-    import router from '@/router';
+import router from '@/router';
 import { userData } from '@/util/login';
 import axios from 'axios';
-    import {inject} from 'vue';
-    import {reactive, ref} from 'vue'
+import {inject} from 'vue';
+import {reactive, ref} from 'vue'
 
     // const axios2 = inject('axios');
-    const util = inject('util');
+    const mr = inject('mr');
     const form = reactive({id : "", password : ""})
     const uData = userData();
 
     const login = async () => {
 
-        if(util.regex({regex: util.idRegex.value, val: form.id, msg: util.idErrMsg.value})) return;
-        if(util.regex({regex: util.pwRegex.value, val: form.password, msg: util.pwErrMsg.value})) return;        
+        if(mr.regex({regex: mr.idRegex.value, val: form.id, msg: mr.idErrMsg.value})) return;
+        if(mr.regex({regex: mr.pwRegex.value, val: form.password, msg: mr.pwErrMsg.value})) return;        
 
         // axios2.axiosFetch('/mini2/member/login', form, '/', 'null');
 

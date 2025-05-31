@@ -1,6 +1,5 @@
 // src/plugins/axios.js
 import axios from 'axios';
-import router from '../router';
 
 const instance = axios.create({
   baseURL: '/mini2', // 필요한 경우 환경변수로 처리 가능
@@ -10,18 +9,21 @@ const instance = axios.create({
   },
 });
 
-instance.axiosFetch = async (route, data, successRedirect, failRedirect) => {
+instance.axiosFetch = async ({type, ...redirect}) => {
 
-    axios
-    .post(route, data)
+    instance
+    [type](redirect.route, redirect?.data) 
+    /* []로 동적으로 메소드 호출([]안에 있는 것을 key로 value를 호출.)
+    만약에 그냥 type 쓰면 인식못한다. 
+    여기서는 type을 axios의 전송방식에 type이 없으니 에러가 나지만
+    다른 경우에 우리는 일반적으로 (redirect.)type해서 value를 가져올거라 생각하지만 실제로 그렇게 동작하지는 않는다. */
     .then((response) => {
-        alert("a");
-        if(response?.status === 200 && response?.data?.status === "success") router.push(successRedirect);
-        else alert("잘못된 접근입니다.");
+      if(response.status === 200) redirect.success?.(response);
     })
     .catch((err) => {
-        (err.response?.data?.msg) ? (alert(err.response?.data?.msg)) : (alert('알 수 없는 오류가 발생했습니다.'));
-        if(failRedirect !== "null") router.push(failRedirect);
+      console.log(err);
+      (err.response?.data?.msg) ? (alert(err.response?.data?.msg)) : (alert('알 수 없는 오류가 발생했습니다.'));
+      redirect.fail?.();
     })
 
 }

@@ -20,7 +20,8 @@
         </div>
         <div class="mb-3">
           <label for="handphone" class="form-label">전화번호</label>
-          <input type="tel" class="form-control" id="handphone" name="phoneNumber" v-model="updateData.phoneNumber" required maxlength="13">      
+          <input type="tel" class="form-control" id="handphone" name="phoneNumber" v-model="updateData.phoneNumber" required maxlength="13">
+          <!--비밀번호 불일치시 왜 phone이 focus 되는지 디버깅하기-->   
           <div v-show="watchChk.phoneRegexChk"><small class="phoneInfo">010-0000-0000 형식으로 입력해주세요.</small></div>             
         </div>
         <div class="mb-3">
@@ -47,7 +48,10 @@ import { userData } from '@/util/login';
 import {ref, onMounted, watch, reactive} from 'vue';
 import router from '@/router'
 import axios from 'axios'
-import util from '@/util/util';
+import {inject} from 'vue';
+
+  const mr = inject('mr');
+  const mic = inject('mic');
 
     const updateData = ref({});
     const passwordChk = ref('');
@@ -56,6 +60,10 @@ import util from '@/util/util';
       pwRegexChk : false,
       phoneRegexChk : false
     });
+    const loc = {
+      'pwLoc': document.querySelector('#password'), 
+      'pwLoc': document.querySelector('#handphone')
+    }
 
     const updateInit = () => {
         const uData = userData();
@@ -66,26 +74,10 @@ import util from '@/util/util';
 
       if(!confirm("수정하시겠습니까?")) return;
 
-      if(!watchChk.pwInvalidChk) {
-        alert(util.pwInvalidErrMsg.value);
-        focus(document.querySelector('#password'));
-        return;
-      }
-
-      if(watchChk.phoneRegexChk) {
-        alert(util.phoneErrMsg.value);
-        focus(document.querySelector('#handphone'));
-        return;
-      }
-
-      if(watchChk.pwRegexChk) {
-        alert(util.pwErrMsg.value);
-        focus(document.querySelector('#password'));
-        return;
-      }
+      if(!mr.memberInputChk(loc, watchChk)) return;
 
       axios
-      .put('/mini2/member/memberUpdate', updateData.value)
+      .put('/member/memberUpdate', updateData.value)
       .then((response) => {
           if(response.status === 200) router.push({name : 'memberDetail'});
       })
@@ -95,24 +87,8 @@ import util from '@/util/util';
 
     }
 
-    watch(
-      [() => updateData.value.password, () => passwordChk.value], // 객체가 아닌 객체의 속성을 감시할 때는 Getter 함수로 감싸서 사용한다. 
-      ([newPw1, newPw2]) => {
-        watchChk.pwInvalidChk = (newPw1 === newPw2);
-        watchChk.pwRegexChk = (util.regex({regex: util.pwRegex.value, val: newPw1}) || util.regex({regex: util.pwRegex.value, val: newPw2}));
-        console.log(watchChk.pwInvalidChk);
-        console.log(watchChk.pwRegexChk);
-      },
-      {deep : true}
-    );
-
-    watch(
-      () => updateData.value.phoneNumber, 
-      (newPhoneNumber) => {
-        watchChk.phoneRegexChk = util.regex({regex: util.phoneRegex.value, val: newPhoneNumber});
-      }, 
-      {deep : true}
-    );
+    mic.pwInputChk(updateData, passwordChk, watchChk);
+    mic.phoneNoInputChk(updateData, watchChk);
 
     onMounted(() => {
         updateInit();
