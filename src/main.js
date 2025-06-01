@@ -7,6 +7,7 @@ import router from '@/router/'
 import axios from '@/util/axios';
 import mr from '@/util/MemberRegex';
 import mic from '@/util/MemberInputChk'
+import {titleMap, reverseTitleMap} from '@/util/mini'
 import {createPinia} from 'pinia'; 
 
 createApp(App)
@@ -16,4 +17,6 @@ createApp(App)
     .provide('router', router)
     .provide('mr', mr)
     .provide('mic', mic)
+    .provide('titleMap', titleMap)
+    .provide('reverseTitleMap', reverseTitleMap)
     .mount('#app')

@@ -1,10 +1,11 @@
 <template>
 	<div class="container">
-        <h1>축구 커뮤니티</h1>
+        <router-link class="nav-link" :to="{ name: 'home' }"><h1>축구 커뮤니티</h1></router-link>
 		<nav class="navbar navbar-expand-lg bg-body-tertiary">
 			<div class="container-fluid">
 				<div class="collapse navbar-collapse" id="navbarNav">
 					<ul class="navbar-nav me-auto w-100" id="nav-items">
+						
 						<li class="nav-item">
 						<router-link class="nav-link" :to="{ name: 'postList', params: { category: 'kleague' } }">K리그</router-link>
 						</li>
@@ -32,18 +33,24 @@
 					<button class="btn btn-outline-danger me-2 login" id="goLogOut" type="button" @click="logout">
 						<span class="route">로그아웃</span>
 					</button>
-					<button class="btn btn-outline-success me-2 login" id="detailMember" type="button">
-						<router-link class="route" :to="{name : 'memberDetail'}">상세보기</router-link>
-					</button>		
+					<router-link class="route" :to="{name : 'memberDetail'}">
+						<button class="btn btn-outline-success me-2 login" id="detailMember" type="button">
+							상세보기
+						</button>
+					</router-link>	
 				</template>
 
 				<template v-if="!uData.getUserInfo">
-					<button class="btn btn-outline-success me-2 nologin" id="goLogin" type="button">
-						<router-link class="route" :to="{name: 'login'}">로그인</router-link>	
-					</button>
-					<button class="btn btn-outline-success me-2 nologin" id="goRegister" type="button">
-						<router-link class="route" :to="{name: 'memberRegisterForm'}">회원가입</router-link>
-					</button>					
+					<router-link class="route" :to="{name: 'login'}">
+						<button class="btn btn-outline-success me-2 nologin" id="goLogin" type="button">
+							로그인	
+						</button>
+					</router-link>
+					<router-link class="route" :to="{name: 'memberRegisterForm'}">
+						<button class="btn btn-outline-success me-2 nologin" id="goRegister" type="button">
+							회원가입
+						</button>
+					</router-link>				
 				</template>				
 			</div>
 		</nav>

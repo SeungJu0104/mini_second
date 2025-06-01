@@ -5,12 +5,12 @@
 		<table class="table table-striped">
 			<thead>
 				<tr>
-				<th scope="col">번호</th>
-				<th scope="col">제목</th>
-				<th scope="col">게시판</th>
-				<th scope="col">작성자</th>
-				<th scope="col">조회수</th>
-				<th scope="col">작성 일시</th>
+					<th scope="col">번호</th>
+					<th scope="col">제목</th>
+					<th scope="col">게시판</th>
+					<th scope="col">작성자</th>
+					<th scope="col">조회수</th>
+					<th scope="col">작성 일시</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -19,8 +19,8 @@
 						<td colspan="7" >검색결과가 없습니다.</td>
 					</tr>
 				</template>
-				<template v-for="(list, index) in pageResponse.list" :key="list.boardNo">
-					<tr class="rows">
+				<template v-for="(list, index) in pageResponse.list" :key="list.postNo">
+					<tr class="rows" @click="movePostDetail(list.postNo)">
 						<td id="postNum">{{ getPostNumber(index) }}</td>
 						<td>{{list.title}}</td>
 						<td>{{list.boardName}}</td>
@@ -31,8 +31,8 @@
 				</template>
 			</tbody>
 		</table>
-		<div class="text-start my-2 boardReg">
-			<button class="btn btn-outline-success" type="button">게시글 작성</button>
+		<div class="text-start my-2 boardReg" v-if="uData.getUserInfo">
+			<button class="btn btn-outline-success" type="button" @click="postWrite">게시글 작성</button>
 		</div>
 	</div>
     <Footer :pageResponse="pageResponse" @changePage="handlePageChange"/>  
@@ -44,9 +44,14 @@ import {ref, watch, inject, computed, onMounted} from 'vue'
 import Footer from '@/components/Footer.vue'
 import {useRoute} from 'vue-router'
 import Search from '@/components/Search.vue'
+import { userData } from '@/util/login';
 
 	const route = useRoute();
 	const searchRef = ref(null);
+	const axios = inject('axios');
+	const router = inject('router');
+	const titleMap = inject('titleMap');
+	const uData = userData();
 
 	// 서버 응답
 	const pageResponse = ref({
@@ -67,14 +72,6 @@ import Search from '@/components/Search.vue'
 		return totalCount - ((pageNo - 1) * size + index);
 	};
 
-	const titleMap = {
-		kleague: "K리그",
-		epl: "EPL",
-		bundesliga: "분데스리가",
-		laliga: "라리가",
-		free: "자유게시판"
-	};
-
 	const handlePageChange = (pageNo) => {
 		if (searchRef.value?.handlePageChange) {
 			searchRef.value.handlePageChange(pageNo);
@@ -88,6 +85,21 @@ import Search from '@/components/Search.vue'
 	const handlePaging = (data) => {
 		pageResponse.value = data;
 	}
+
+	const movePostDetail = (postNo) => {
+		router.push({name: 'postDetail', params: {postNo}, query: { view: 'true' }});
+	}
+
+	const postWrite = () => {
+		const board = route.params.category;
+		router.push({name: 'postRegister', params: {board}});
+	}
+
+	watch(category, (newVal) => {
+		if (searchRef.value?.searchData) {
+			searchRef.value.searchData(); // 또는 데이터를 새로 요청하는 함수
+		}	
+	});
 
 </script>
 

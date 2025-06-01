@@ -30,7 +30,7 @@ export const userData = defineStore("userData", () => {
         localStorage.removeItem('boardAuth');
         localStorage.removeItem('lockYn');
 
-        router.push('/');
+        router.push({name : 'home'});
 
     }
 

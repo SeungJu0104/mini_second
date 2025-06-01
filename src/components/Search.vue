@@ -103,11 +103,12 @@ import {useRoute} from 'vue-router'
 
     const searchData = () => {
 		form.pageNo = 1;
+		// form.searchValue = '';
 		// createDTO();
         search();
 	};
     
-    defineExpose({ handlePageChange });
+    defineExpose({ handlePageChange, searchData });
 
     onMounted(() => {
         nextTick(() => {
