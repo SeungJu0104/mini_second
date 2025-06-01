@@ -1,20 +1,7 @@
 <template>
 	<div class="container">
 		<h3>회원 목록</h3>
-		<form id="searchForm" class="d-flex align-items-center gap-2 mb-3 flex-wrap" @submit.prevent="search">
-			<input type="hidden" name="pageNo" id="pageNo" :value="form.pageNo" />
-			<input type="hidden" name="type" id="type" value="member" />
-
-			<div class="input-group" style="width: 250px;">
-				<input type="text" id="searchValue" name="searchValue" class="form-control" v-model="form.searchValue" placeholder="아이디를 입력해주세요."/>
-				<button class="btn btn-outline-success" type="submit">검색</button>
-			</div>
-
-			<select name="size" id="size" class="form-select form-select-sm w-auto" v-model="form.size" @change="sizeChange">
-				<option v-for="option in items" :key="option" :value="option">{{ option }}</option>
-			</select>
-		</form>
-
+		<Search ref="searchRef" @loaded="handleLoaded" @paging="handlePaging"/>
 		<table class="table table-striped">
 			<thead>
 				<tr>
@@ -31,7 +18,7 @@
 				</tr>
 			</thead>
 			<tbody>
-				<template v-if="pageResponse.list.length === 0">
+				<template v-if="pageResponse.list?.length === 0">
 					<tr>
 						<td colspan="10">검색결과가 없습니다.</td>
 					</tr>
@@ -61,20 +48,11 @@
 <script setup>
     import {reactive, ref, inject, onMounted, watch} from 'vue'
 	import Footer from '@/components/Footer.vue'
+	import Search from '@/components/Search.vue'
 	  
 	const router = inject('router');
 	const axios = inject('axios');
-
-    // 배열과 boolean 타입은 ref로 반응형 객체 만들어야한다.
-    const items = ref([10, 30, 50]);
-    // const lockYn = ref(false);
-
-	// 사용자 입력용
-	const form = reactive({
-		searchValue: '',
-		pageNo: 1,
-		size: 10
-	});
+	const searchRef = ref(null);
 
 	// 서버 응답
 	const pageResponse = ref({
@@ -87,57 +65,20 @@
 		prev: false
 	});
 
-	const createDTO = () => ({
-		pageNo: String(form.pageNo),
-		searchValue: form.searchValue || "", // form.searchValue가 falsy(null, false 등)한 값이면 "" 사용
-		size: String(form.size)
-	});
-
-	const paging = (dto) => {
-
-		axios.axiosFetch({
-			type: 'post',
-			route: '/member/list',
-			data: dto,
-			success: (response) => {
-				if (response.data?.pageResponse !== null) {
-					pageResponse.value = response.data.pageResponse;
-				}		
-			}
-		});
-
-	};
-
 	const handlePageChange = (pageNo) => {
-		form.pageNo = pageNo;
-		paging(createDTO());
+		if (searchRef.value?.handlePageChange) {
+			searchRef.value.handlePageChange(pageNo);
+		}		
+
 	};
 
-	
-	const sizeChange = () => {
-		form.pageNo = 1;
-		paging(createDTO());
+	const handleLoaded = (data) => {
+		pageResponse.value = data;
 	};
 
-	const searchData = () => {
-		form.pageNo = 1;
-		createDTO();
+	const handlePaging = (data) => {
+		pageResponse.value = data;
 	};
-
-	const search = () => {
-
-		axios.axiosFetch({
-			type: 'post',
-			route: '/member/search',
-			data: createDTO(),
-			success: (response) => {
-				if (response.data?.pageResponse !== null) {
-					pageResponse.value = response.data.pageResponse;
-				}		
-			}
-		});		
-
-	}
 
 	// 회원 잠금
 	// Watcher를 사용하면 다수의 item을 동시에 감시해야하므로, 인라인을 사용하더라도 @change하는 것이 더 적절하다.
@@ -161,7 +102,5 @@
 		});
 
 	};
-
-	onMounted(() => {paging(createDTO())});
 
 </script>

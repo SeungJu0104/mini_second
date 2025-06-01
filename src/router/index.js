@@ -11,7 +11,7 @@ const router = createRouter({
     history : createWebHistory(),
     routes : [
         {path: '/', name: 'home', component: Home},
-        {path: '/board/getBoard/K리그', name: 'postList', component: PostList},
+        {path: '/board/:category', name: 'postList', component: PostList},
         {path: '/member/login', name: 'login', component: Login},
         {path: '/member/registerForm', name: 'memberRegisterForm', component: MemberRegisterForm},
         {path: '/member/updateForm', name: 'memberUpdateForm', component: MemberUpdateForm},

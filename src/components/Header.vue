@@ -5,21 +5,21 @@
 			<div class="container-fluid">
 				<div class="collapse navbar-collapse" id="navbarNav">
 					<ul class="navbar-nav me-auto w-100" id="nav-items">
-					<li class="nav-item">
-						<router-link class="nav-link" to="/board/K리그">K리그</router-link>
-					</li>
-					<li class="nav-item">
-						<router-link class="nav-link" to="/board/EPL">EPL</router-link>
-					</li>
-					<li class="nav-item">
-						<router-link class="nav-link" to="/board/분데스리가">분데스리가</router-link>
-					</li>
-					<li class="nav-item">
-						<router-link class="nav-link" to="/board/라리가">라리가</router-link>
-					</li>
-					<li class="nav-item">
-						<router-link class="nav-link" to="/board/자유게시판">자유게시판</router-link>
-					</li>
+						<li class="nav-item">
+						<router-link class="nav-link" :to="{ name: 'postList', params: { category: 'kleague' } }">K리그</router-link>
+						</li>
+						<li class="nav-item">
+						<router-link class="nav-link" :to="{ name: 'postList', params: { category: 'epl' } }">EPL</router-link>
+						</li>
+						<li class="nav-item">
+						<router-link class="nav-link" :to="{ name: 'postList', params: { category: 'bundesliga' } }">분데스리가</router-link>
+						</li>
+						<li class="nav-item">
+						<router-link class="nav-link" :to="{ name: 'postList', params: { category: 'laliga' } }">라리가</router-link>
+						</li>
+						<li class="nav-item">
+						<router-link class="nav-link" :to="{ name: 'postList', params: { category: 'free' } }">자유게시판</router-link>
+						</li>
 						<template v-if="uData.checkAuth">
 							<li class="nav-item" id="memberList">
 								<router-link class="nav-link" :to="{name : 'memberList'}">회원목록</router-link>
