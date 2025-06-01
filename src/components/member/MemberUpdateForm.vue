@@ -27,6 +27,7 @@
         <div class="mb-3">
             <label for="post_code" class="form-label">우편번호</label>
             <input type="text" class="form-control" id="postCode" name="postCode" v-model="updateData.postCode" required maxlength="5">
+            <div v-show="watchChk.postCodeRegexChk"><small class="postCodeInfo">우편번호는 5자리 숫자입니다.</small></div>
         </div>
         <div class="mb-3">
             <label for="address" class="form-label">주소</label>
@@ -45,53 +46,56 @@
 
 <script setup>
 import { userData } from '@/util/login';
-import {ref, onMounted, watch, reactive} from 'vue';
-import router from '@/router'
-import axios from 'axios'
+import {ref, onMounted, reactive} from 'vue';
 import {inject} from 'vue';
 
   const mr = inject('mr');
   const mic = inject('mic');
+  const axios = inject('axios');
+  const router = inject('router');
 
-    const updateData = ref({});
-    const passwordChk = ref('');
-    const watchChk = reactive({
-      pwInvalidChk : false,
-      pwRegexChk : false,
-      phoneRegexChk : false
+  const updateData = ref({});
+  const passwordChk = ref('');
+  const watchChk = reactive({
+    pwInvalidChk : false,
+    pwRegexChk : false,
+    phoneRegexChk : false,
+    postCodeRegexChk : false
+  });
+  const loc = {
+    'pwLoc': document.querySelector('#password'), 
+    'phoneLoc': document.querySelector('#handphone'),
+    'postCodeLoc' : document.querySelector("#postCodeLoc")
+  }
+
+  const updateInit = () => {
+      const uData = userData();
+      updateData.value = uData.shareUserData();
+  }
+
+  const updateMember = () => {
+
+    if(!confirm("수정하시겠습니까?")) return;
+
+    if(!mr.memberInputChk(loc, watchChk)) return;
+
+    axios.axiosFetch({
+      type: 'put',
+      route: '/member/update',
+      data: updateData.value,
+      success: (response) => {
+        router.push({name : 'memberDetail'});
+      } 
     });
-    const loc = {
-      'pwLoc': document.querySelector('#password'), 
-      'pwLoc': document.querySelector('#handphone')
-    }
 
-    const updateInit = () => {
-        const uData = userData();
-        updateData.value = uData.shareUserData();
-    }
+  }
 
-    const updateMember = () => {
+  mic.pwInputChk(updateData, passwordChk, watchChk);
+  mic.phoneNoInputChk(updateData, watchChk);
+  mic.postCodeInputChk(updateData, watchChk);
 
-      if(!confirm("수정하시겠습니까?")) return;
-
-      if(!mr.memberInputChk(loc, watchChk)) return;
-
-      axios
-      .put('/member/memberUpdate', updateData.value)
-      .then((response) => {
-          if(response.status === 200) router.push({name : 'memberDetail'});
-      })
-      .catch((err) => {
-          (err.response.data?.msg) ? (alert(err.response.data?.msg)) : (alert('알 수 없는 오류가 발생했습니다.'));
-        })
-
-    }
-
-    mic.pwInputChk(updateData, passwordChk, watchChk);
-    mic.phoneNoInputChk(updateData, watchChk);
-
-    onMounted(() => {
-        updateInit();
-    })
+  onMounted(() => {
+      updateInit();
+  })
 
 </script>

@@ -60,9 +60,10 @@
 
 <script setup>
     import {reactive, ref, inject, onMounted, watch} from 'vue'
-    import {useRouter} from 'vue-router'
-    import axios from 'axios'
 	import Footer from '@/components/Footer.vue'
+	  
+	const router = inject('router');
+	const axios = inject('axios');
 
     // 배열과 boolean 타입은 ref로 반응형 객체 만들어야한다.
     const items = ref([10, 30, 50]);
@@ -88,21 +89,21 @@
 
 	const createDTO = () => ({
 		pageNo: String(form.pageNo),
-		searchValue: form.searchValue || "",
+		searchValue: form.searchValue || "", // form.searchValue가 falsy(null, false 등)한 값이면 "" 사용
 		size: String(form.size)
 	});
 
 	const paging = (dto) => {
 
-		axios
-		.post('/mini2/member/memberList', dto)
-		.then((response) => {
-			if (response.status === 200 && response.data?.pageResponse !== null) {
-				pageResponse.value = response.data.pageResponse;
+		axios.axiosFetch({
+			type: 'post',
+			route: '/member/list',
+			data: dto,
+			success: (response) => {
+				if (response.data?.pageResponse !== null) {
+					pageResponse.value = response.data.pageResponse;
+				}		
 			}
-		})
-		.catch((error) => {
-			(err.response.data?.msg) ? (alert(err.response.data?.msg)) : (alert('알 수 없는 오류가 발생했습니다.'));
 		});
 
 	};
@@ -124,17 +125,18 @@
 	};
 
 	const search = () => {
-		console.log(searchData());
-		axios
-		.post('/mini2/member/search', createDTO())
-		.then((response) => {
-			if (response.status === 200 && response.data?.pageResponse !== null) {
-				pageResponse.value = response.data.pageResponse;
+
+		axios.axiosFetch({
+			type: 'post',
+			route: '/member/search',
+			data: createDTO(),
+			success: (response) => {
+				if (response.data?.pageResponse !== null) {
+					pageResponse.value = response.data.pageResponse;
+				}		
 			}
-		})
-		.catch((err) => {
-			(err.response.data?.msg) ? (alert(err.response.data?.msg)) : (alert('알 수 없는 오류가 발생했습니다.'));
-		});
+		});		
+
 	}
 
 	// 회원 잠금
@@ -143,17 +145,19 @@
 
 		let lockYn = (e.target.checked) ?  'Y' : 'N';
 
-		axios
-		.put('/mini2/member/lockYn', {
-			lockYn: lockYn,
-			memberNo: e.target.value
-		})
-		.then((response) => {
-			if (response.status === 200) item.lockYn = lockYn
-		})
-		.catch((err) => {
-			e.target.checked = !lockYn;
-			(err.response.data?.msg) ? (alert(err.response.data?.msg)) : (alert('알 수 없는 오류가 발생했습니다.'));
+		axios.axiosFetch({
+			type: 'put',
+			route: '/member/lockYn',
+			data: {
+				lockYn: lockYn,
+				memberNo: e.target.value				
+			},
+			success: (response) => {
+				item.lockYn = lockYn;		
+			},
+			fail: (err) => {
+				e.target.checked = !lockYn;				
+			}
 		});
 
 	};

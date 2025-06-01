@@ -36,6 +36,16 @@ mic.idInputChk = (data, watchChk) => {
     );
 };
 
+mic.postCodeInputChk = (data, watchChk) => {
+  watch(
+    () => data.value.postCode,
+    (newPostCode) => {
+      watchChk.postCodeRegexChk = mr.regex({regex: mr.postCodeRegex.value, val: newPostCode});
+    },
+    {deep: true}
+  );
+};
+
 mic.idOnChange = (watchChk) => {
   watchChk.idDupChk = false;
   console.log("onChange이벤트 : ", watchChk.idDupChk);

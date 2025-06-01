@@ -109,7 +109,7 @@
 		text-align: center;
 		flex: 1;
 	}
-	.pwInfo, .phoneInfo{
+	.pwInfo, .phoneInfo, .postCodeInfo{
 		color: red;
 	}
 	input[type='checkbox']{

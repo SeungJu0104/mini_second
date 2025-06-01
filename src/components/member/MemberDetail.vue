@@ -45,21 +45,21 @@
 </template>
 
 <script setup>
-import axios from 'axios';
 import {ref} from 'vue';
 import { userData } from '@/util/login';
-import router from '@/router'
+import {inject} from 'vue'
 
 	const item = ref({});
 	const uData = userData();
+	const axios = inject('axios');
+	const router = inject('router');
 
-	axios
-	.get(`/mini2/member/memberDetail/${uData.userId}`)
-	.then((response) => {
-		if(response.status === 200) item.value = response.data?.item;
-	})
-	.catch((err) => {
-		(err.response.data?.msg) ? (alert(err.response.data?.msg)) : (alert('알 수 없는 오류가 발생했습니다.'));
+	axios.axiosFetch({
+      type: 'get',
+      route: `/member/detail/${uData.userId}`,
+      success: (response) => {
+        item.value = response.data?.item;
+      }
 	})
 
 	const sendUserData = () => {
@@ -71,17 +71,15 @@ import router from '@/router'
 
 		if(!confirm('탈퇴하시겠습니까?')) return;
 
-		axios
-		.delete(`/mini2/member/memberDelete/${uData.userId}`)
-		.then((response) => {
-			if(response.status === 200) {
+		axios.axiosFetch({
+			type: 'delete',
+      		route: `/member/delete/${uData.userId}`,
+			success: (response) => {
 				uData.logout();
+				alert(response.data?.msg);
 				router.push({name : 'home'})
 			}
-		})
-		.catch((err) => {
-			(err.response.data?.msg) ? (alert(err.response.data?.msg)) : (alert('알 수 없는 오류가 발생했습니다.'));
-		})
+		});
 
 	}
 

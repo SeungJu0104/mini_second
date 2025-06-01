@@ -29,7 +29,8 @@
         <div class="mb-3">
             <label for="post_code" class="form-label">우편번호</label>
             <input type="text" class="form-control" id="postCode" name="postCode" placeholder="우편번호" v-model="registerData.postCode" required maxlength="5">
-        </div>
+            <div v-show="watchChk.postCodeRegexChk"><small class="postCodeInfo">우편번호는 5자리 숫자입니다.</small></div>
+          </div>
         <div class="mb-3">
             <label for="address" class="form-label">주소</label>
             <input type="text" class="form-control" id="address" name="address" placeholder="주소" v-model="registerData.address" required>
@@ -50,7 +51,6 @@
 </template>
 
 <script setup>
-import { userData } from '@/util/login';
 import {ref, reactive} from 'vue';
 import {inject} from 'vue';
 
@@ -66,31 +66,17 @@ import {inject} from 'vue';
     idRegexChk : false,
     pwInvalidChk : false,
     pwRegexChk : false,
-    phoneRegexChk : false
+    phoneRegexChk : false,
+    postCodeRegexChk : false
   });
 
   const loc = {
     'idLoc' : document.querySelector("#id"),
     'pwLoc' : document.querySelector("#password"),
-    'phoneLoc' : document.querySelector("#phoneNumber")
-  }
-  const redirect = {
-    route: '/member/memberRegister',
-    type: 'post',
-    data: registerData.value,
-    success: () => {router.push({name: 'home'});}
+    'phoneLoc' : document.querySelector("#phoneNumber"),
+    'postCodeLoc' : document.querySelector("#postCode")
   }
   const today = new Date().toISOString().split('T')[0];
-
-  const memberRegister = () => {
-    console.log("a");
-    if(!confirm("회원가입을 하시겠습니까?"));
-    console.log("b");
-    if(!mr.memberInputChk(loc, watchChk)) return;
-    console.log("c");
-    axios.axiosFetch(redirect);
-
-  }
 
   function idDupChk() {
 
@@ -101,10 +87,25 @@ import {inject} from 'vue';
 
   function idOnChange() {
     mic.idOnChange(watchChk);
+  }  
+
+  const memberRegister = () => {
+
+    if(!confirm("회원가입을 하시겠습니까?"));
+    if(!mr.memberInputChk(loc, watchChk)) return;
+
+    axios.axiosFetch({
+      route: '/member/register',
+      type: 'post',
+      data: registerData.value,
+      success: () => {router.push({name: 'home'});}
+    });
+
   }
 
   mic.idInputChk(registerData, watchChk);
   mic.pwInputChk(registerData, passwordChk, watchChk);
   mic.phoneNoInputChk(registerData, watchChk);
+  mic.postCodeInputChk(registerData, watchChk);
 
 </script>
