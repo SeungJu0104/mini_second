@@ -18,13 +18,13 @@
 </template>
 
 <script setup>
-import router from '@/router';
 import { userData } from '@/util/login';
 import {inject} from 'vue';
 import {reactive, ref} from 'vue'
 
     const axios = inject('axios');
     const mr = inject('mr');
+    const router = inject('router');
     const loginVal = reactive({id : "", password : ""})
     const uData = userData();
 

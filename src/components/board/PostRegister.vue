@@ -61,7 +61,6 @@
           <span class="form-text">비밀번호는 숫자 4자리입니다.</span>
         </div>
       </div>
-
       <div class="d-flex flex-column align-items-center gap-2 mt-4">
         <button type="submit" class="btn btn-outline-success">게시글 등록</button>
       </div>
@@ -77,7 +76,6 @@ import goBack from '@/components/goBack.vue'
 
     const route = useRoute();
     const titleMap = inject('titleMap');
-    const reverseTitleMap = inject('reverseTitleMap');
     const axios = inject('axios');
     const router = inject('router');
     const post = ref({

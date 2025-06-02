@@ -48,7 +48,6 @@ import { userData } from '@/util/login';
 
 	const route = useRoute();
 	const searchRef = ref(null);
-	const axios = inject('axios');
 	const router = inject('router');
 	const titleMap = inject('titleMap');
 	const uData = userData();

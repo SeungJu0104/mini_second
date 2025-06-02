@@ -31,8 +31,7 @@
 		</table>
 		
 		<p>내용</p>
-		<div id="boardDetail_content"> {{post.content}}
-		</div>
+		<div id="boardDetail_content"> {{post.content}} </div>
 		<div id="boardUCBtn">
 			<div class="d-flex justify-content-center gap-2 mt-4" >
 				<button class="btn btn-outline-success boardDetail " @click="movePostUpdate" v-if="authPost()">수정</button>
@@ -44,20 +43,18 @@
 </template>
 
 <script setup>
-import {onMounted, inject, ref} from 'vue'
+import {onMounted, inject, ref, computed} from 'vue'
 import {useRoute} from 'vue-router'
 import goBack from '@/components/goBack.vue'
 
     const route = useRoute();
     const axios = inject('axios');
+    const router = inject('router');
     const reverseTitleMap = inject('reverseTitleMap');
     const post = ref({});
-    const router = inject('router');
-
-    const category = reverseTitleMap[post.value.boardName];
 
     const authPost = () => {
-        return (post.value.id === localStorage.getItem('userId'));
+        return ((post.value.id === localStorage.getItem('userId')) || (localStorage.getItem('boardAuth') === 'Y'));
     }
 
     const movePostUpdate = () => {
@@ -81,6 +78,7 @@ import goBack from '@/components/goBack.vue'
         }
 
         post.value.password = password;
+        const category = reverseTitleMap[post.value.boardName];
 
         axios.axiosFetch({
             type: 'post',

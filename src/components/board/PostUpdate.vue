@@ -41,10 +41,10 @@
 <script setup>
 import {onMounted, inject, ref} from 'vue'
 import {useRoute} from 'vue-router'
-import router from '@/router'
 import goBack from '@/components/goBack.vue'
 
     const axios = inject('axios');
+    const router = inject('router');
     const post = ref({});
     const route = useRoute();
     const reverseTitleMap = inject('reverseTitleMap');
