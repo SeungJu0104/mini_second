@@ -32,7 +32,7 @@ mr.memberRegInputChk = ({...loc}, watchChk) => {
     return false;
   }
 
-  mr.memberInputChk(loc, watchChk);
+  return mr.memberInputChk(loc, watchChk);
 }
 
 mr.memberInputChk = ({...loc}, watchChk) => {

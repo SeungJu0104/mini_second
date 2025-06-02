@@ -44,7 +44,7 @@
             <input type="date" class="form-control" id="birthDate" name="birthDate" :min="'1950-01-01'" :max="today" v-model="registerData.birthDate" required>
         </div>
         <div class="d-flex flex-column align-items-center gap-2 mt-4">
-          <button type="submit" class="btn btn-outline-success" id="memberRegister">전송</button>
+          <button type="submit" class="btn btn-outline-success" id="memberRegister">가입</button>
         </div>
     </form>
     <goBack/>
@@ -93,14 +93,19 @@ import goBack from '@/components/goBack.vue'
 
   const memberRegister = () => {
 
-    if(!confirm("회원가입을 하시겠습니까?"));
-    if(!mr.memberInputChk(loc, watchChk)) return;
+    if(!confirm("회원가입을 하시겠습니까?")) return;
+    if(!mr.memberRegInputChk(loc, watchChk)) return;
 
     axios.axiosFetch({
       route: '/member/register',
       type: 'post',
       data: registerData.value,
-      success: () => {router.push({name: 'home'});}
+      success: (response) => {
+
+        alert(response.data?.msg);
+        router.push({name: 'home'});
+        
+      }
     });
 
   }

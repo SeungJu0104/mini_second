@@ -48,7 +48,6 @@ mic.postCodeInputChk = (data, watchChk) => {
 
 mic.idOnChange = (watchChk) => {
   watchChk.idDupChk = false;
-  console.log("onChange이벤트 : ", watchChk.idDupChk);
 }
 
 mic.idDupChk = (registerData, watchChk) => {
@@ -59,7 +58,6 @@ mic.idDupChk = (registerData, watchChk) => {
     success: (response) => {
       alert(response.data?.msg);
       watchChk.idDupChk = true;
-      console.log("통신 후 : " + watchChk.idDupChk);
     },
     fail: () => {
       watchChk.idDupChk = false;

@@ -102,7 +102,7 @@ import { userData } from '@/util/login';
 
 	watch(category, (newVal) => {
 		if (searchRef.value?.searchData) {
-			searchRef.value.searchData(); // 또는 데이터를 새로 요청하는 함수
+			searchRef.value.searchData(); // 게시판 바뀔 때마다 Search로 다시 요청 보내서 가져온다.
 		}	
 	});
 

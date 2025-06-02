@@ -70,7 +70,7 @@
 </template>
 
 <script setup>
-import { ref, inject } from 'vue'
+import { ref, inject, reactive } from 'vue'
 import { useRoute } from 'vue-router'
 import goBack from '@/components/goBack.vue'
 
@@ -78,7 +78,7 @@ import goBack from '@/components/goBack.vue'
     const titleMap = inject('titleMap');
     const axios = inject('axios');
     const router = inject('router');
-    const post = ref({
+    const post = reactive({
         boardName: route.params.board || '',
         title: '',
         content: '',
@@ -88,21 +88,21 @@ import goBack from '@/components/goBack.vue'
 
     const postRegister = () => {
 
-        if(post.value.title === null || post.value.title.trim === '') alert("제목은 필수항목입니다.");
-        if(post.value.content === null || post.value.content.trim === '') alert("내용은 필수 항목입니다.");
+        if(post.title === null || post.title.trim() === '') alert("제목은 필수항목입니다.");
+        if(post.content === null || post.content.trim() === '') alert("내용은 필수 항목입니다.");
 
-        if (!/^\d{4}$/.test(post.value.password)) {
+        if (!/^\d{4}$/.test(post.password)) {
             alert('비밀번호는 숫자 4자리여야 합니다.');
             return;
         }
 
-        const category = post.value.boardName;
-        post.value.boardName = titleMap[category];
+        const category = post.boardName;
+        post.boardName = titleMap[category];
 
         axios.axiosFetch({
             type: 'post',
             route: '/board/register',
-            data: post.value,
+            data: post,
             success: (response) => {
                 alert(response.data?.msg);
                 router.push({name: 'postList', params: { category: category }});

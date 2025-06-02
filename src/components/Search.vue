@@ -58,23 +58,25 @@ import {useRoute} from 'vue-router'
 
     const routeSetting = () => {
         let axiosRoute = null;
+
         if(baseRoute === '/member') axiosRoute = `${baseRoute}/search`
         else axiosRoute = `${route.path}/search?searchValue=${form.searchValue}`;
-        console.log("axiosRoute : ", axiosRoute);
+
         return axiosRoute;
     }
 
 	const search = () => {
-        console.log("a");
 		axios.axiosFetch({
 			type: 'post',
 			route: routeSetting(),
 			data: createDTO(),
 			success: (response) => {
+
 				if (response.data?.pageResponse !== null) {
 					pageResponse.value = response.data.pageResponse;
-                    emit('loaded', pageResponse.value); // 부모에게 데이터 전달
-				}		
+                    emit('loaded', pageResponse.value);
+				}	
+
 			}
 		});		
 
@@ -87,10 +89,12 @@ import {useRoute} from 'vue-router'
 			route: routeSetting(),
 			data: createDTO(), // dto,
 			success: (response) => {
+
 				if (response.data?.pageResponse !== null) {
 					pageResponse.value = response.data.pageResponse;
                     emit('paging', pageResponse.value);
-				}		
+				}	
+
 			}
 		});
 
