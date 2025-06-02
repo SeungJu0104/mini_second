@@ -34,8 +34,9 @@
 		<div class="text-start my-2 boardReg" v-if="uData.getUserInfo">
 			<button class="btn btn-outline-success" type="button" @click="postWrite" v-if="authPostWrite()">게시글 작성</button>
 		</div>
+		<Footer :pageResponse="pageResponse" @changePage="handlePageChange"/>  
 	</div>
-    <Footer :pageResponse="pageResponse" @changePage="handlePageChange"/>  
+    
 </template>
 
 <script setup>
