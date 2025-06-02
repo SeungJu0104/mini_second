@@ -62,7 +62,9 @@ import { userData } from '@/util/login';
 		next: false,
 		prev: false
 	});
+
 	const category = computed(() => route.params.category);
+	
 	const getPostNumber = (index) => {
 		const totalCount = pageResponse.value.totalCount ?? 0;
 		const pageNo = pageResponse.value.pageNo ?? 1;
