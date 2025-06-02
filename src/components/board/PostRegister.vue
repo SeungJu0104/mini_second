@@ -70,7 +70,7 @@
 </template>
 
 <script setup>
-import { ref, inject, reactive } from 'vue'
+import { inject, reactive } from 'vue'
 import { useRoute } from 'vue-router'
 import goBack from '@/components/goBack.vue'
 

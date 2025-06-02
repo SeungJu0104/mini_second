@@ -4,11 +4,11 @@
     <form id="updateForm" @submit.prevent="updateMember">
         <div class="mb-3">
           <label for="userid" class="form-label">아이디</label>
-          <input type="text" class="form-control" id="userid" name="id" :value="updateData.id" readonly>
+          <input type="text" class="form-control" id="userid" ref="idRef" name="id" :value="updateData.id" readonly>
         </div>
         <div class="mb-3">
           <label for="password" class="form-label">비밀번호</label>
-          <input type="password" class="form-control pwChk" id="password" name="password" placeholder="비밀번호" v-model="updateData.password" min-length="8" max-length="12" required>
+          <input type="password" class="form-control pwChk" id="password" ref="pwRef" name="password" placeholder="비밀번호" v-model="updateData.password" min-length="8" max-length="12" required>
           <input type="password" class="form-control mt-2 pwChk" id="passwordValid" placeholder="비밀번호확인" min-length="8" max-length="12" v-model="passwordChk" required>          
           <div v-show="watchChk.pwRegexChk"><small class="pwInfo">비밀번호는 8~12자 사이이며, 영문자, 숫자, 특수문자를 각각 1개 이상 포함해야 합니다.</small></div>
           <div v-show="!watchChk.pwInvalidChk"><small class="pwInfo">비밀번호와 비밀번호 확인이 일치하지 않습니다.</small></div>
@@ -20,13 +20,13 @@
         </div>
         <div class="mb-3">
           <label for="handphone" class="form-label">전화번호</label>
-          <input type="tel" class="form-control" id="handphone" name="phoneNumber" v-model="updateData.phoneNumber" required maxlength="13">
+          <input type="tel" class="form-control" id="handphone" name="phoneNumber" ref="phoneRef" v-model="updateData.phoneNumber" required maxlength="13">
           <!--비밀번호 불일치시 왜 phone이 focus 되는지 디버깅하기-->   
           <div v-show="watchChk.phoneRegexChk"><small class="phoneInfo">010-0000-0000 형식으로 입력해주세요.</small></div>             
         </div>
         <div class="mb-3">
             <label for="post_code" class="form-label">우편번호</label>
-            <input type="text" class="form-control" id="postCode" name="postCode" v-model="updateData.postCode" required maxlength="5">
+            <input type="text" class="form-control" id="postCode" name="postCode" ref="postCodeRef" v-model="updateData.postCode" required maxlength="5">
             <div v-show="watchChk.postCodeRegexChk"><small class="postCodeInfo">우편번호는 5자리 숫자입니다.</small></div>
         </div>
         <div class="mb-3">
@@ -64,11 +64,18 @@ import goBack from '@/components/goBack.vue'
     phoneRegexChk : false,
     postCodeRegexChk : false
   });
-  const loc = {
-    'pwLoc': document.querySelector('#password'), 
-    'phoneLoc': document.querySelector('#handphone'),
-    'postCodeLoc' : document.querySelector("#postCodeLoc")
-  }
+
+  const idRef = ref(null)
+  const pwRef = ref(null)
+  const phoneRef = ref(null)
+  const postCodeRef = ref(null)
+
+  const loc = reactive({
+    idLoc: null,
+    pwLoc: null,
+    phoneLoc: null,
+    postCodeLoc: null
+  });
 
   const updateInit = () => {
       const uData = userData();
@@ -97,7 +104,14 @@ import goBack from '@/components/goBack.vue'
   mic.postCodeInputChk(updateData, watchChk);
 
   onMounted(() => {
-      updateInit();
+
+    loc.idLoc = idRef.value
+    loc.pwLoc = pwRef.value
+    loc.phoneLoc = phoneRef.value
+    loc.postCodeLoc = postCodeRef.value
+
+    updateInit();
+
   })
 
 </script>

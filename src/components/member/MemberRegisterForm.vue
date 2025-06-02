@@ -8,7 +8,7 @@
           	<input type="text" class="form-control" id="userid" name="id" ref="idRef" placeholder="아이디" v-model="registerData.id" @change="idOnChange">
             <button class="btn btn-outline-success me-2 " id="idDupChk" @click="idDupChk" type="button">중복확인</button>
           </div>
-          <div v-show=""><small class="idInfo">아이디는 8~10자이며, 영문자와 숫자만 포함해야 합니다.</small></div>
+          <div v-show="watchChk.idRegexChk"><small class="idInfo">아이디는 8~10자이며, 영문자와 숫자만 포함해야 합니다.</small></div>
         </div>
         <div class="mb-3">
           <label for="password" class="form-label">비밀번호</label>
@@ -19,7 +19,7 @@
         </div>
         <div class="mb-3">
           <label for="name" class="form-label">이름</label>
-          <input type="text" class="form-control" id="name" name="name" ref="nameRef" placeholder="이름" v-model="registerData.name" required>
+          <input type="text" class="form-control" id="name" name="name" placeholder="이름" v-model="registerData.name" required>
         </div>
         <div class="mb-3">
           <label for="handphone" class="form-label">전화번호</label>
@@ -33,11 +33,11 @@
           </div>
         <div class="mb-3">
             <label for="address" class="form-label">주소</label>
-            <input type="text" class="form-control" id="address" name="address" ref="addressRef" placeholder="주소" v-model="registerData.address" required>
+            <input type="text" class="form-control" id="address" name="address" placeholder="주소" v-model="registerData.address" required>
         </div>
         <div class="mb-3">
             <label for="detail_address" class="form-label">상세 주소</label>
-            <input type="text" class="form-control" id="detail_address" name="detailAddress" ref="detailAddressRef" placeholder="상세 주소" v-model="registerData.detailAddress" required>
+            <input type="text" class="form-control" id="detail_address" name="detailAddress" placeholder="상세 주소" v-model="registerData.detailAddress" required>
         </div>
         <div class="mb-3">
             <label for="birthdate" class="form-label">생년월일</label>
