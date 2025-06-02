@@ -25,14 +25,12 @@ import {useRoute} from 'vue-router'
     // 배열과 boolean 타입은 ref로 반응형 객체 만들어야한다.
     const items = ref([10, 30, 50]);    
 
-	// 사용자 입력용
 	const form = reactive({
 		searchValue: '',
 		pageNo: 1,
 		size: 10
 	});
 
-    // 서버 응답
 	const pageResponse = ref({
 		list: [],
 		pageNo: 1,
@@ -82,12 +80,12 @@ import {useRoute} from 'vue-router'
 
 	}
 
-	const paging = (/*dto*/) => {
+	const paging = () => {
 
 		axios.axiosFetch({
 			type: 'post',
 			route: routeSetting(),
-			data: createDTO(), // dto,
+			data: createDTO(),
 			success: (response) => {
 
 				if (response.data?.pageResponse !== null) {
@@ -107,8 +105,6 @@ import {useRoute} from 'vue-router'
 
     const searchData = () => {
 		form.pageNo = 1;
-		// form.searchValue = '';
-		// createDTO();
         search();
 	};
     
@@ -116,14 +112,8 @@ import {useRoute} from 'vue-router'
 
     onMounted(() => {
         nextTick(() => {
-            searchData(); // 이 내부에서 emit('loaded') 호출됨
+            searchData();
         });
     });
-
-    /*
-    Search에서 axios로 가져오고, 
-    emit으로 MemberList.vue 또는 PostList.vue에 넘겨준다.
-    그리고 거기서 다시 Footer로 넘겨준다.
-    */
 
 </script>

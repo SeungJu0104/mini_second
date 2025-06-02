@@ -21,7 +21,6 @@
         <div class="mb-3">
           <label for="handphone" class="form-label">전화번호</label>
           <input type="tel" class="form-control" id="handphone" name="phoneNumber" ref="phoneRef" v-model="updateData.phoneNumber" required maxlength="13">
-          <!--비밀번호 불일치시 왜 phone이 focus 되는지 디버깅하기-->   
           <div v-show="watchChk.phoneRegexChk"><small class="phoneInfo">010-0000-0000 형식으로 입력해주세요.</small></div>             
         </div>
         <div class="mb-3">

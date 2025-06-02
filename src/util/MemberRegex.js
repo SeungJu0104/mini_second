@@ -48,21 +48,19 @@ mr.memberInputChk = ({...loc}, watchChk) => {
     loc?.pwLoc?.focus();
     return false;
   }
-  // 비밀번호 불일치 또는 정규식 불일치 시 전화번호 입력 칸으로 focus 수행되는 문제 디버깅하기
 
   if(watchChk.phoneRegexChk) {
     alert(mr.phoneErrMsg.value);
     loc?.phoneLoc?.focus();
     return false;
   }
-  // 전화번호 불일치 시 해당 입력칸이 focus 되지 않는 문제 디버깅하기
 
   if(watchChk.postCodeRegexChk) {
     alert(mr.postCodeErrMsg.value);
     loc?.postCodeLoc?.focus();
     return false;
   }
-  // 우편번호 불일치 시 해당 입력칸이 focus 되지 않는 문제 디버깅하기
+
   return true;
 }
 

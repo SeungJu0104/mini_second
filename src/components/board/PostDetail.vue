@@ -43,7 +43,7 @@
 </template>
 
 <script setup>
-import {onMounted, inject, ref, computed} from 'vue'
+import {onMounted, inject, ref} from 'vue'
 import {useRoute} from 'vue-router'
 import goBack from '@/components/goBack.vue'
 

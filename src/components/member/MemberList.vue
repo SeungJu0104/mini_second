@@ -47,7 +47,7 @@
 </template>
 
 <script setup>
-    import {reactive, ref, inject, onMounted, watch} from 'vue'
+    import {ref, inject} from 'vue'
 	import Footer from '@/components/Footer.vue'
 	import Search from '@/components/Search.vue'
 	import goBack from '@/components/goBack.vue'
@@ -67,6 +67,7 @@
 	});
 
 	const handlePageChange = (pageNo) => {
+
 		if (searchRef.value?.handlePageChange) {
 			searchRef.value.handlePageChange(pageNo);
 		}		
