@@ -34,6 +34,7 @@
                 <button class="btn btn-outline-success" type="submit">수정</button>
             </div>
 		</form>
+        <goBack/>
 	</div>
 </template>
 
@@ -41,6 +42,7 @@
 import {onMounted, inject, ref} from 'vue'
 import {useRoute} from 'vue-router'
 import router from '@/router'
+import goBack from '@/components/goBack.vue'
 
     const axios = inject('axios');
     const post = ref({});

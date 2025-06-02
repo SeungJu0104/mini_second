@@ -47,12 +47,14 @@
           <button type="submit" class="btn btn-outline-success" id="memberRegister">전송</button>
         </div>
     </form>
+    <goBack/>
   </div>    
 </template>
 
 <script setup>
 import {ref, reactive} from 'vue';
 import {inject} from 'vue';
+import goBack from '@/components/goBack.vue'
 
   const mr = inject('mr');
   const mic = inject('mic');

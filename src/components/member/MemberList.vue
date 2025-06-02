@@ -41,6 +41,7 @@
 				</template>
 			</tbody>
 		</table>
+		<goBack/>
 		<Footer :pageResponse="pageResponse" @changePage="handlePageChange"/>
 	</div>
 </template>
@@ -49,8 +50,8 @@
     import {reactive, ref, inject, onMounted, watch} from 'vue'
 	import Footer from '@/components/Footer.vue'
 	import Search from '@/components/Search.vue'
-	  
-	const router = inject('router');
+	import goBack from '@/components/goBack.vue'
+	
 	const axios = inject('axios');
 	const searchRef = ref(null);
 

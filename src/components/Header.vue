@@ -1,6 +1,6 @@
 <template>
 	<div class="container">
-        <router-link class="nav-link" :to="{ name: 'home' }"><h1>축구 커뮤니티</h1></router-link>
+        <h1><router-link class="nav-link" :to="{ name: 'home' }">축구 커뮤니티</router-link></h1>
 		<nav class="navbar navbar-expand-lg bg-body-tertiary">
 			<div class="container-fluid">
 				<div class="collapse navbar-collapse" id="navbarNav">

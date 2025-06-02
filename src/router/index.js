@@ -8,7 +8,7 @@ import MemberUpdateForm from '@/components/member/MemberUpdateForm.vue'
 import MemberDetail from '@/components/member/MemberDetail.vue'
 import PostDetail from '@/components/board/PostDetail.vue'
 import PostUpdate from '@/components/board/PostUpdate.vue'
-import PostRegister from '@/components/board/postRegister.vue'
+import PostRegister from '@/components/board/PostRegister.vue'
 
 const router = createRouter({
     history : createWebHistory(),

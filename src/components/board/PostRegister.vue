@@ -66,12 +66,14 @@
         <button type="submit" class="btn btn-outline-success">게시글 등록</button>
       </div>
     </form>
+    <goBack/>
   </div>
 </template>
 
 <script setup>
 import { ref, inject } from 'vue'
 import { useRoute } from 'vue-router'
+import goBack from '@/components/goBack.vue'
 
     const route = useRoute();
     const titleMap = inject('titleMap');
@@ -85,8 +87,6 @@ import { useRoute } from 'vue-router'
         password: '',
         id: localStorage.getItem('userId')
     })
-
-    
 
     const postRegister = () => {
 

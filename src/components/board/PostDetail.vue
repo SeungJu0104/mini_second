@@ -39,18 +39,20 @@
 				<button class="btn btn-outline-danger boardDetail " @click="postDelete" v-if="authPost()">삭제</button>
 			</div>
 		</div>
+  <goBack/>
 	</div>
 </template>
 
 <script setup>
 import {onMounted, inject, ref} from 'vue'
 import {useRoute} from 'vue-router'
-import router from '@/router'
+import goBack from '@/components/goBack.vue'
 
     const route = useRoute();
     const axios = inject('axios');
     const reverseTitleMap = inject('reverseTitleMap');
     const post = ref({});
+    const router = inject('router');
 
     const category = reverseTitleMap[post.value.boardName];
 

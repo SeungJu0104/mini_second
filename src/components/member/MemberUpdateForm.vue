@@ -41,6 +41,7 @@
           <button type="submit" class="btn btn-primary col-6" id="memberUpdate">수정</button>
         </div>
     </form>
+    <goBack/>
   </div>    
 </template>
 
@@ -48,6 +49,7 @@
 import { userData } from '@/util/login';
 import {ref, onMounted, reactive} from 'vue';
 import {inject} from 'vue';
+import goBack from '@/components/goBack.vue'
 
   const mr = inject('mr');
   const mic = inject('mic');

@@ -1,4 +1,3 @@
-
 export const titleMap = {
     kleague: "K리그",
     epl: "EPL",
