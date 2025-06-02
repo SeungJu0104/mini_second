@@ -32,7 +32,7 @@
 			</tbody>
 		</table>
 		<div class="text-start my-2 boardReg" v-if="uData.getUserInfo">
-			<button class="btn btn-outline-success" type="button" @click="postWrite">게시글 작성</button>
+			<button class="btn btn-outline-success" type="button" @click="postWrite" v-if="authPostWrite()">게시글 작성</button>
 		</div>
 	</div>
     <Footer :pageResponse="pageResponse" @changePage="handlePageChange"/>  
@@ -40,7 +40,7 @@
 
 <script setup>
 
-import {ref, watch, inject, computed, onMounted} from 'vue'
+import {ref, watch, inject, computed} from 'vue'
 import Footer from '@/components/Footer.vue'
 import {useRoute} from 'vue-router'
 import Search from '@/components/Search.vue'
@@ -87,6 +87,10 @@ import { userData } from '@/util/login';
 
 	const movePostDetail = (postNo) => {
 		router.push({name: 'postDetail', params: {postNo}, query: { view: 'true' }});
+	}
+
+	const authPostWrite = () => {
+		return uData.getUserInfo
 	}
 
 	const postWrite = () => {
